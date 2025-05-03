@@ -8,6 +8,7 @@ import SwiftUI
 
 struct CameraView: View {
     @StateObject private var model = CameraModel()
+    @Binding var selectedTab: Int
  
     private static let barHeightFactor = 0.15
     
@@ -16,8 +17,8 @@ struct CameraView: View {
         NavigationStack {
             GeometryReader { geometry in
                 ViewfinderView(image:  $model.viewfinderImage )
-                    .overlay(alignment: .bottom) {
-                        buttonsView()
+                    .overlay(alignment: .top) {
+                        dismissView()
                     }
                     .overlay(alignment: .center)  {
                         Color.clear
@@ -27,6 +28,9 @@ struct CameraView: View {
                             .accessibilityAddTraits([.isImage])
                     }
                     .background(.black)
+                    .overlay(alignment: .bottom) {
+                        buttonsView()
+                    }
             }
             .task {
                 await model.camera.start()
@@ -44,8 +48,24 @@ struct CameraView: View {
         }
     }
     
+    private func dismissView() -> some View {
+        Button {
+            selectedTab = 0
+            print("Tapped exit camera")
+        } label: {
+            HStack {
+                Image(systemName: "x.circle")
+                    .resizable()
+                    .frame(width: 30, height: 30)
+                    .foregroundStyle(.white)
+                Spacer()
+            }
+            .padding(30)
+        }
+    }
+    
     private func buttonsView() -> some View {
-        HStack() {
+        HStack {
             
             Spacer()
             
@@ -67,11 +87,13 @@ struct CameraView: View {
             }
             
             Spacer()
-        
         }
         .buttonStyle(.plain)
         .labelStyle(.iconOnly)
         .padding(.bottom, 80)
     }
-    
+}
+
+#Preview {
+    CameraView(selectedTab: .constant(1))
 }

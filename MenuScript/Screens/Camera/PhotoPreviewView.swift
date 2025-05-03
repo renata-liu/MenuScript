@@ -17,11 +17,21 @@ struct PhotoPreviewView: View {
             
             VStack {
                 Logo()
+                
                 Spacer()
+                
+                Text("Today's Menu")
+                    .foregroundColor(.mainBlue)
+                    .font(.titanOne(fontSize: 30))
+                    .offset(y: -30)
+                    .padding(.top, 30)
+                
+                Spacer()
+                
                 Image(uiImage: photo)
                     .resizable()
                     .scaledToFit()
-                    .accessibilityLabel("Captured photo")
+                    .accessibilityLabel("Menu Photo")
                     .offset(y: -30)
                 
                 HStack (spacing: 20){

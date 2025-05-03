@@ -8,11 +8,12 @@
 import SwiftUI
 
 struct HomeView: View {
+    @Binding var selectedTab: Int
+    
     var body: some View {
         VStack {
             Logo()
             SloganText()
-            
             ZStack {
                 RoundedRectangle(cornerRadius: 15)
                     .frame(width: 300, height: 370)
@@ -25,24 +26,15 @@ struct HomeView: View {
                         .frame(width: 200, height: 155)
                         .aspectRatio(contentMode: .fit)
                     Button {
-                        print("open scanner view")
+                        selectedTab = 1
                     } label: {
                         PrimaryMSButton(text: "SCAN MENU")
                     }
                     .padding(.top, 20)
                 }
             }
-            
             Spacer()
         }
-    }
-}
-
-struct Logo: View {
-    var body: some View {
-        Image("logo")
-            .resizable()
-            .frame(width: 100, height: 100)
     }
 }
 
@@ -61,5 +53,5 @@ struct SloganText: View {
 }
 
 #Preview {
-    HomeView()
+    HomeView(selectedTab: .constant(0))
 }
