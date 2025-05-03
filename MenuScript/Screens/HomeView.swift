@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
-    @Binding var selectedTab: Int
+    @Binding var isShowingCameraSheet: Bool
     
     var body: some View {
         VStack {
@@ -26,7 +26,7 @@ struct HomeView: View {
                         .frame(width: 200, height: 155)
                         .aspectRatio(contentMode: .fit)
                     Button {
-                        selectedTab = 1
+                        isShowingCameraSheet = true
                     } label: {
                         PrimaryMSButton(text: "SCAN MENU")
                     }
@@ -34,6 +34,9 @@ struct HomeView: View {
                 }
             }
             Spacer()
+        }
+        .sheet(isPresented: $isShowingCameraSheet) {
+            CameraView(isShowingCameraSheet: $isShowingCameraSheet)
         }
     }
 }
@@ -53,5 +56,5 @@ struct SloganText: View {
 }
 
 #Preview {
-    HomeView(selectedTab: .constant(0))
+    HomeView(isShowingCameraSheet: .constant(false))
 }

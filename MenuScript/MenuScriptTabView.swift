@@ -8,21 +8,18 @@
 import SwiftUI
 
 struct MenuScriptTabView: View {
-    @State private var selectedTab = 0
+    @State var isShowingCameraSheet: Bool = false
     
     var body: some View {
-        TabView(selection: $selectedTab){
-            HomeView(selectedTab: $selectedTab)
+        TabView(){
+            HomeView(isShowingCameraSheet: $isShowingCameraSheet)
                 .tabItem { Label("Home", systemImage: "house") }
-                .tag(0)
             
-            CameraView(selectedTab: $selectedTab)
-                .tabItem { Label("Scan", systemImage: "camera") }
-                .tag(1)
+//            CameraView(isShowingCameraSheet: $isShowingCameraSheet)
+//                .tabItem { Label("Scan", systemImage: "camera") }
             
             ProfileView()
                 .tabItem { Label("Account", systemImage: "person") }
-                .tag(2)
         }
         .accentColor(.mainBlue)
     }

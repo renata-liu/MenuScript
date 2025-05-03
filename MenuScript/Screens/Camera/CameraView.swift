@@ -8,7 +8,7 @@ import SwiftUI
 
 struct CameraView: View {
     @StateObject private var model = CameraModel()
-    @Binding var selectedTab: Int
+    @Binding var isShowingCameraSheet: Bool
  
     private static let barHeightFactor = 0.15
     
@@ -50,17 +50,19 @@ struct CameraView: View {
     
     private func dismissView() -> some View {
         Button {
-            selectedTab = 0
-            print("Tapped exit camera")
+            isShowingCameraSheet = false
         } label: {
             HStack {
-                Image(systemName: "x.circle")
+                Spacer()
+                Text("SWIPE DOWN TO CLOSE")
+                    .foregroundColor(.white)
+                Image(systemName: "chevron.down.2")
                     .resizable()
-                    .frame(width: 30, height: 30)
+                    .frame(width: 10, height: 10)
                     .foregroundStyle(.white)
                 Spacer()
             }
-            .padding(30)
+            .padding(20)
         }
     }
     
@@ -95,5 +97,5 @@ struct CameraView: View {
 }
 
 #Preview {
-    CameraView(selectedTab: .constant(1))
+    CameraView(isShowingCameraSheet: .constant(true))
 }
