@@ -13,7 +13,7 @@ struct MenuScriptTabView: View {
             HomeView()
                 .tabItem { Label("Home", systemImage: "house") }
             
-            ScannerView()
+            CameraView()
                 .tabItem { Label("Scan", systemImage: "camera") }
             
             ProfileView()

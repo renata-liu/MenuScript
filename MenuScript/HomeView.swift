@@ -27,7 +27,7 @@ struct HomeView: View {
                     Button {
                         print("open scanner view")
                     } label: {
-                        MSButton(text: "SCAN MENU")
+                        PrimaryMSButton(text: "SCAN MENU")
                     }
                     .padding(.top, 20)
                 }
