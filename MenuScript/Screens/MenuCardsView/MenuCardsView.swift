@@ -2,42 +2,17 @@
 //  MenuCardsView.swift
 //  MenuScript
 //
-//  Created by Renata Liu on 2025-05-02.
+//  Created by Renata Liu on 2025-05-03.
 //
+
 import SwiftUI
-import Vision
 
 struct MenuCardsView: View {
-    @StateObject private var viewModel: MenuCardsViewModel
-    let menuImage: UIImage
-    
-    init(menuImage: UIImage) {
-        self.menuImage = menuImage
-        _viewModel = StateObject(wrappedValue: MenuCardsViewModel(menuImage: menuImage))
-    }
-    
     var body: some View {
-        VStack {
-            Text("Testing OCR")
-                .font(.title)
-            Image(uiImage: menuImage)
-                .resizable()
-                .scaledToFit()
-            
-            
-            Button("Scrape Text"){
-                viewModel.recognizeText()
-            }
-            
-            ScrollView {
-                Text(viewModel.translatedText)
-            }
-        }
-        .padding()
+        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
     }
-
 }
 
 #Preview {
-    MenuCardsView(menuImage: .french)
+    MenuCardsView()
 }
