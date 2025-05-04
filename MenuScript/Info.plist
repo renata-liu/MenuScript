@@ -5,6 +5,8 @@
 	<key>UIAppFonts</key>
 	<array>
 		<string>TitanOne-Regular.ttf</string>
+		<string>Lunasima-Regular.ttf</string>
+		<string>Lunasima-Bold.ttf</string>
 	</array>
 </dict>
 </plist>
