@@ -40,7 +40,7 @@ final class MenuCardsViewModel: ObservableObject {
                         self.translatedText = result ?? "Error when translating text"
                         
                         print("Translated Text:", self.translatedText)
-                        self.extractMenuItems(self.translatedText) { items in
+                        self.extractMenuItems(translatedText: self.translatedText, originalText: self.recognizedText) { items in
                             DispatchQueue.main.async {
                                 self.menuItems = items ?? []
                                 print(self.menuItems)
@@ -97,7 +97,7 @@ final class MenuCardsViewModel: ObservableObject {
     }
     
     
-    private func extractMenuItems(_ text: String, completion: @escaping ([MenuItem]?) -> Void) {
+    private func extractMenuItems(translatedText: String, originalText: String, completion: @escaping ([MenuItem]?) -> Void) {
         guard let apiKey = ProcessInfo.processInfo.environment["OPENAI_API_KEY"] else {
             print("Missing OpenAI API key")
             completion(nil)
@@ -106,14 +106,18 @@ final class MenuCardsViewModel: ObservableObject {
         
         let prompt = """
         Extract a structured menu from the text below that was scraped from a menu using OCR. Return a JSON array where each menu item has:
-        - "name": dish name
+        - "name": dish name in english. Return the name in regular letter capitalization.
+        - "originalName": dish name in the original menu's language. Use the original menu text provided below to match the english translation of the dish to the name listed on the menu.
         - "description": short description. If no description is provided in the menu text, generate a short, approximately 20 word description of the dish. If a description is provided but the descriptions exceeds 30 words, shorten it to around 20 words. 
         - "price": price of the dish if it is provided in the menu text. otherwise, fill this value with an empty string.
 
         Return ONLY JSON.
 
-        Menu text:
-        \(text)
+        Translated menu text:
+        \(translatedText)
+        
+        Original menu text:
+        \(originalText)
         """
         
         let url = URL(string: "https://api.openai.com/v1/chat/completions")!
@@ -147,20 +151,9 @@ final class MenuCardsViewModel: ObservableObject {
             }
 
             do {
-                struct OpenAIResponse: Codable {
-                    struct Choice: Codable {
-                        struct Message: Codable {
-                            let content: String
-                        }
-                        let message: Message
-                    }
-                    let choices: [Choice]
-                }
-
                 let decoded = try JSONDecoder().decode(OpenAIResponse.self, from: data)
                 let jsonText = decoded.choices.first?.message.content ?? ""
 
-                // Convert the returned JSON string to [MenuItem]
                 let itemsData = Data(jsonText.utf8)
                 let items = try JSONDecoder().decode([MenuItem].self, from: itemsData)
 

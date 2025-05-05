@@ -16,73 +16,49 @@ struct MenuCardsView: View {
     }
     
     var body: some View {
-        VStack {
-            Logo()
-            Spacer()
-            
-            VStack (alignment: .leading, spacing: 15) {
-                Text("Menu Items")
-                    .font(.titanOne(fontSize: 30))
-                    .padding(.leading, 20)
-                    .foregroundStyle(Color.forestGreen)
-                
-                ScrollView {
-                    ForEach(0..<viewModel.menuItems.count, id: \.self) { index in
-                        let menuItem = viewModel.menuItems[index]
-                        MenuCard(dishName: menuItem.name,
-                                 price: menuItem.price,
-                                 description: menuItem.description)
-                    }
-                }
-                Spacer()
-            }
-        }
-        .onAppear {
-            viewModel.recognizeText()
-        }
-    }
-
-}
-
-struct MenuCard: View {
-    var dishName: String
-    var price: String?
-    var description: String
-    
-    var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 15)
-                .stroke(.earthGreen, lineWidth: 3)
-                .foregroundStyle(Color.white)
-                .frame(width: UIScreen.main.bounds.width - 30, height: 120)
-                .padding(.horizontal, 20)
-            HStack {
-                Image(.logo)
-                    .resizable()
-                    .frame(width: 90, height: 90)
+            VStack {
+                Logo()
+                Spacer()
                 
-                VStack (alignment: .leading){
-                    HStack {
-                        Text(dishName)
-                            .font(.titanOne(fontSize: 18))
-                            .foregroundColor(.forestGreen)
-                            .padding(.bottom, 1)
-                        Text(price ?? "")
-                            .font(.lunasimaBold(fontSize: 15))
-                            .foregroundColor(.forestGreen)
+                VStack (alignment: .leading, spacing: 15) {
+                    Text("Menu Items")
+                        .font(.titanOne(fontSize: 30))
+                        .padding(.leading, 20)
+                        .foregroundStyle(Color.forestGreen)
+                    
+                    ScrollView {
+//                        ForEach(0..<viewModel.menuItems.count, id: \.self) { index in
+//                            let menuItem = viewModel.menuItems[index]
+//                            MenuCard(dishName: menuItem.name,
+//                                     originalName: menuItem.originalName,
+//                                     price: menuItem.price,
+//                                     description: menuItem.description)
+//                        }
+                        
+                        ForEach(0..<MockData.menuItems.count, id: \.self) { index in
+                            let menuItem = MockData.menuItems[index]
+                            MenuCard(dishName: menuItem.name,
+                                     originalName: menuItem.originalName,
+                                     price: menuItem.price,
+                                     description: menuItem.description)
+                        }
                     }
-                    Text(description)
-                        .font(.lunasimaRegular(fontSize: 15))
-                        .padding(.trailing, 6)
+                    Spacer()
                 }
             }
-            .frame(width: UIScreen.main.bounds.width - 40)
+            .onAppear {
+//                viewModel.recognizeText()
+            }
+//            .opacity(viewModel.menuItems.isEmpty ? 0 : 1)
+            
+//            LoadingView(image: .plainLogo,
+//                        captionText: "decoding your menu...",
+//                        mainText: "from foreign to familiar")
+//            .opacity(viewModel.menuItems.isEmpty ? 1 : 0)
         }
-        .background(
-            RoundedRectangle(cornerRadius: 15)
-                .fill(.offMint)
-            )
     }
+
 }
 
 #Preview {
