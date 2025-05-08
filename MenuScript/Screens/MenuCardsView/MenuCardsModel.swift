@@ -16,11 +16,13 @@ struct GoogleTranslateResponse: Codable {
     let data: Data
 }
 
-struct MenuItem: Codable {
+struct MenuItem: Codable, Identifiable {
+    let id = UUID()
     let name: String
     let originalName: String
     let price: String?
     let description: String
+    var imageURL: String?
 }
 
 struct OpenAIResponse: Codable {

@@ -12,6 +12,7 @@ struct MenuCard: View {
     var originalName: String
     var price: String?
     var description: String
+    var imageURL: String?
     
     var body: some View {
         ZStack {
@@ -20,10 +21,28 @@ struct MenuCard: View {
                 .padding(.horizontal, 20)
             
             HStack {
-                Image(.logo)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 90, height: 90)
+                if let imageURL = imageURL, let url = URL(string: imageURL) {
+                    AsyncImage(url: url) { image in
+                        image
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 90)
+                            .clipped()
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                    } placeholder: {
+                        Image(.logo)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 90, height: 90)
+                    }
+                } else {
+                    Image(.logo)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 90, height: 90)
+                        .clipped()
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                }
                 
                 VStack (alignment: .leading){
                     HStack {

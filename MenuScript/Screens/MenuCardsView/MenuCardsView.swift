@@ -28,21 +28,22 @@ struct MenuCardsView: View {
                         .foregroundStyle(Color.forestGreen)
                     
                     ScrollView {
-//                        ForEach(0..<viewModel.menuItems.count, id: \.self) { index in
-//                            let menuItem = viewModel.menuItems[index]
+                        ForEach(0..<viewModel.menuItems.count, id: \.self) { index in
+                            let menuItem = viewModel.menuItems[index]
+                            MenuCard(dishName: menuItem.name,
+                                     originalName: menuItem.originalName,
+                                     price: menuItem.price,
+                                     description: menuItem.description,
+                                     imageURL: menuItem.imageURL)
+                        }
+                        
+//                        ForEach(0..<MockData.menuItems.count, id: \.self) { index in
+//                            let menuItem = MockData.menuItems[index]
 //                            MenuCard(dishName: menuItem.name,
 //                                     originalName: menuItem.originalName,
 //                                     price: menuItem.price,
 //                                     description: menuItem.description)
 //                        }
-                        
-                        ForEach(0..<MockData.menuItems.count, id: \.self) { index in
-                            let menuItem = MockData.menuItems[index]
-                            MenuCard(dishName: menuItem.name,
-                                     originalName: menuItem.originalName,
-                                     price: menuItem.price,
-                                     description: menuItem.description)
-                        }
                     }
                     Spacer()
                 }
@@ -50,12 +51,12 @@ struct MenuCardsView: View {
             .onAppear {
 //                viewModel.recognizeText()
             }
-//            .opacity(viewModel.menuItems.isEmpty ? 0 : 1)
+            .opacity(viewModel.menuItems.isEmpty ? 0 : 1)
             
-//            LoadingView(image: .plainLogo,
-//                        captionText: "decoding your menu...",
-//                        mainText: "from foreign to familiar")
-//            .opacity(viewModel.menuItems.isEmpty ? 1 : 0)
+            LoadingView(image: .plainLogo,
+                        captionText: "decoding your menu...",
+                        mainText: "from foreign to familiar")
+            .opacity(viewModel.menuItems.isEmpty ? 1 : 0)
         }
     }
 

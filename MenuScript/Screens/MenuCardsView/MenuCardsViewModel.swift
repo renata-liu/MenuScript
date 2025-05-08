@@ -11,6 +11,7 @@ final class MenuCardsViewModel: ObservableObject {
     @Published var recognizedText = ""
     @Published var translatedText = ""
     @Published var menuItems: [MenuItem] = []
+    @Published var dishImage: String?
     let menuImage: UIImage
     
     init(menuImage: UIImage) {
@@ -43,7 +44,16 @@ final class MenuCardsViewModel: ObservableObject {
                         self.extractMenuItems(translatedText: self.translatedText, originalText: self.recognizedText) { items in
                             DispatchQueue.main.async {
                                 self.menuItems = items ?? []
-                                print(self.menuItems)
+                                
+                                for index in self.menuItems.indices {
+                                        let dishName = self.menuItems[index].name
+                                        self.getImage(dishName) { imageURL in
+                                            DispatchQueue.main.async {
+                                                self.menuItems[index].imageURL = imageURL
+                                                print(self.menuItems)
+                                            }
+                                        }
+                                    }
                             }
                         }
                     }
@@ -165,5 +175,55 @@ final class MenuCardsViewModel: ObservableObject {
                 completion(nil)
             }
         }.resume()
+    }
+    
+    private func getImage(_ dishName: String, completion: @escaping (String?) -> Void) {
+        guard let apiKey = ProcessInfo.processInfo.environment["IMAGE_SEARCH_API_KEY"] else {
+            print("Missing OpenSearch API key")
+            completion(nil)
+            return
+        }
+        
+        guard let engineID = ProcessInfo.processInfo.environment["IMAGE_SEARCH_ENGINE_ID"] else {
+            print("Missing Google Search Engine ID")
+            completion(nil)
+            return
+        }
+
+        let encodedQuery = dishName.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? dishName
+        let urlString = "https://www.googleapis.com/customsearch/v1?key=\(apiKey)&cx=\(engineID)&q=\(encodedQuery)&searchType=image&num=1"
+        
+        guard let url = URL(string: urlString) else {
+            print("Invalid URL")
+            completion(nil)
+            return
+        }
+        
+        let request = URLRequest(url: url)
+
+        URLSession.shared.dataTask(with: request) { data, _, error in
+            guard let data = data, error == nil else {
+                print("OpenSearch API error:", error ?? "")
+                completion(nil)
+                return
+            }
+
+            do {
+                let decoded = try JSONDecoder().decode(GoogleImageSearchResponse.self, from: data)
+                let imageUrl = decoded.items.first?.link
+                completion(imageUrl)
+            } catch {
+                print("Error decoding image search response:", error)
+                completion(nil)
+            }
+        }.resume()
+        
+        struct GoogleImageSearchResponse: Codable {
+            struct Item: Codable {
+                let link: String
+            }
+
+            let items: [Item]
+        }
     }
 }
