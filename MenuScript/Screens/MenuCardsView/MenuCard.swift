@@ -26,9 +26,17 @@ struct MenuCard: View {
                         image
                             .resizable()
                             .scaledToFill()
-                            .frame(width: 90)
+                            .frame(width: 120)
                             .clipped()
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .clipShape(
+                                .rect(
+                                    topLeadingRadius: 14,
+                                    bottomLeadingRadius: 14,
+                                    bottomTrailingRadius: 0,
+                                    topTrailingRadius: 0
+                                )
+                            )
+                            .padding(1.4)
                     } placeholder: {
                         Image(.logo)
                             .resizable()
@@ -36,12 +44,20 @@ struct MenuCard: View {
                             .frame(width: 90, height: 90)
                     }
                 } else {
-                    Image(.logo)
+                    Image(.plainLogo)
                         .resizable()
-                        .scaledToFill()
-                        .frame(width: 90, height: 90)
+                        .frame(width: 100, height: 100)
                         .clipped()
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .clipShape(
+                            .rect(
+                                topLeadingRadius: 14,
+                                bottomLeadingRadius: 14,
+                                bottomTrailingRadius: 0,
+                                topTrailingRadius: 0
+                            )
+                        )
+                        .padding(1.4)
+                        .offset(x: 8)
                 }
                 
                 VStack (alignment: .leading){
@@ -49,26 +65,28 @@ struct MenuCard: View {
                         Text(dishName)
                             .font(.titanOne(fontSize: 18))
                             .foregroundColor(.forestGreen)
-                            .padding(.bottom, 1)
+                            .padding(.top, 15)
+                            .fixedSize(horizontal: false, vertical: true)
                         Spacer()
                         Text(price ?? "")
                             .font(.lunasimaBold(fontSize: 15))
                             .foregroundColor(.forestGreen)
-                            .padding(.trailing, 15)
+                            .padding(.top, 15)
                     }
+                    .padding(.trailing, 25)
+                    .padding(.leading, 10)
                     Text(originalName.uppercased())
                         .foregroundStyle(.earthGreen)
-                        .offset(y: -5)
                         .font(.lunasimaBold(fontSize: 15))
+                        .padding(.bottom, 1)
+                        .padding([.leading, .trailing], 10)
                     Text(description)
                         .font(.lunasimaRegular(fontSize: 15))
-                        .padding(.trailing, 6)
-                        .padding(.top, 1)
-                        .offset(y: -5)
                         .fixedSize(horizontal: false, vertical: true)
+                        .padding(.bottom, 15)
+                        .padding([.leading, .trailing], 10)
                 }
             }
-            .padding(12)
             .frame(width: UIScreen.main.bounds.width - 40)
         }
         .background(
@@ -80,7 +98,7 @@ struct MenuCard: View {
 }
 
 #Preview {
-    VStack {
+    ScrollView {
         MenuCard(dishName: MockData.sampleMenuItem1.name,
                  originalName: MockData.sampleMenuItem1.originalName,
                  price: MockData.sampleMenuItem3.price,

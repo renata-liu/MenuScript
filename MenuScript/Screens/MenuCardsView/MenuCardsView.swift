@@ -36,7 +36,7 @@ struct MenuCardsView: View {
                                      description: menuItem.description,
                                      imageURL: menuItem.imageURL)
                         }
-                        
+//                        
 //                        ForEach(0..<MockData.menuItems.count, id: \.self) { index in
 //                            let menuItem = MockData.menuItems[index]
 //                            MenuCard(dishName: menuItem.name,
@@ -49,7 +49,7 @@ struct MenuCardsView: View {
                 }
             }
             .onAppear {
-//                viewModel.recognizeText()
+                viewModel.recognizeText()
             }
             .opacity(viewModel.menuItems.isEmpty ? 0 : 1)
             
